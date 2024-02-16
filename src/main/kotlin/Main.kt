@@ -4,6 +4,9 @@ import org.example.player.MiniMaxPlayer
 import org.example.player.RandomPlayer
 
 fun main() {
-    val competition = Competition(RandomPlayer(), MiniMaxPlayer(), 100)
+    val player1 = RandomPlayer()
+    val player2 = MiniMaxPlayer()
+    val competition = Competition(player1, player2, 100)
     println(competition.play())
+    println("${player2.name}: ${player2.evaluationCounter}")
 }

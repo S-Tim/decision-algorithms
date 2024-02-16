@@ -6,10 +6,10 @@ import kotlin.math.max
 import kotlin.math.min
 
 class MiniMaxPlayer(override val name: String = "MiniMax") : Player {
-    private var evaluationCounter = 0
+    var evaluationCounter = 0
 
     override fun getMove(game: GameState): Pair<Int, Int> {
-        evaluationCounter = 0
+        // evaluationCounter = 0
 
         val maximizingPlayer = game.currentPlayer == 0
         val moves = game.getMoves()
