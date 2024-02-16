@@ -6,7 +6,7 @@ import org.example.model.Result
 open class AlphaBeta(override val name: String = "AlphaBeta") : Player {
     var evaluationCounter = 0
 
-    override fun getMove(game: GameState): Pair<Int, Int> {
+    override fun getMove(game: GameState): Int {
         // evaluationCounter = 0
 
         val maximizingPlayer = game.currentPlayer == 0
@@ -16,15 +16,15 @@ open class AlphaBeta(override val name: String = "AlphaBeta") : Player {
         return bestMove
     }
 
-    private fun minimax(game: GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Boolean): Pair<Int, Pair<Int, Int>> {
+    private fun minimax(game: GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Boolean): Pair<Int, Int> {
         evaluationCounter += 1
 
         if (game.state != Result.OPEN || depth == 0) {
             return when (game.state) {
-                Result.X -> 1 to Pair(0, 0)
-                Result.O -> -1 to Pair(0, 0)
-                Result.DRAW -> 0 to Pair(0, 0)
-                Result.OPEN -> 0 to Pair(0, 0)
+                Result.X -> 1 to 0
+                Result.O -> -1 to 0
+                Result.DRAW -> 0 to 0
+                Result.OPEN -> 0 to 0
             }
         }
 
@@ -33,7 +33,7 @@ open class AlphaBeta(override val name: String = "AlphaBeta") : Player {
         val moves = game.getMoves().shuffled()
         if (maximizingPlayer) {
             var maxEval = alpha
-            var bestMove = Pair(0, 0)
+            var bestMove = 0
             for (move in moves) {
                 val (eval, _) = minimax(game.move(move), depth - 1, maxEval, beta, false)
                 if(eval > maxEval){
@@ -45,7 +45,7 @@ open class AlphaBeta(override val name: String = "AlphaBeta") : Player {
             return maxEval to bestMove
         } else {
             var minEval = beta
-            var bestMove = Pair(0, 0)
+            var bestMove = 0
             for (move in moves) {
                 val (eval, _) = minimax(game.move(move), depth - 1, alpha, minEval, true)
                 if(eval < minEval){

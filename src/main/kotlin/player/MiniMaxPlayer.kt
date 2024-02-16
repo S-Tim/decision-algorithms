@@ -8,7 +8,7 @@ import kotlin.math.min
 class MiniMaxPlayer(override val name: String = "MiniMax") : Player {
     var evaluationCounter = 0
 
-    override fun getMove(game: GameState): Pair<Int, Int> {
+    override fun getMove(game: GameState): Int {
         // evaluationCounter = 0
 
         val maximizingPlayer = game.currentPlayer == 0

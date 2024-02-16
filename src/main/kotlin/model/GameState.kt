@@ -2,32 +2,38 @@ package org.example.model
 
 data class GameState(
     val board: List<List<CellValue>> = (0 until 3).map { (0 until 3).map { CellValue.EMPTY } },
+    val xCells: Int = 0,
+    val oCells: Int = 0,
+    val emptyCells: Int = 511,
     val currentPlayer: Int = 0,
     val state: Result = Result.OPEN
 ) {
-    fun getMoves(): Set<Pair<Int, Int>> {
-        return (board.indices).flatMap { row -> board.indices.map { col -> row to col } }
-            .filter { board[it.first][it.second] == CellValue.EMPTY }.toSet()
+    fun getMoves(): Set<Int> {
+        val result = mutableSetOf<Int>()
+        var start = emptyCells
+        for (i in 0..8) {
+            if (start and 1 != 0) {
+                result.add(i)
+            }
+            start = start shr 1
+        }
+        return result
     }
 
-    fun move(position: Pair<Int, Int>): GameState {
+    fun move(position: Int): GameState {
         val moves = getMoves()
         if (position !in moves) throw IllegalArgumentException("Move is not legal")
 
-        val nextBoard = mutableListOf<MutableList<CellValue>>()
-        for (i in board.indices) {
-            val inner = mutableListOf<CellValue>()
-            for (j in board.indices) {
-                if (i == position.first && j == position.second) inner.add(if (currentPlayer == 0) CellValue.X else CellValue.O)
-                else inner.add(board[i][j])
-            }
-            nextBoard.add(inner)
-        }
+        val nextXCells = if (currentPlayer == 0) xCells or (1 shl position) else xCells
+        val nextOCells = if (currentPlayer == 1) oCells or (1 shl position) else oCells
+        val nextEmptyCells = (nextXCells or nextOCells).inv() and 0b111_111_111
+        val nextState = calculateGameStateBinary(nextXCells, nextOCells, nextEmptyCells)
 
-        val nextState = calculateGameState(nextBoard)
         val nextPlayer = if (nextState != Result.OPEN) currentPlayer else (currentPlayer + 1) % 2
         return this.copy(
-            board = nextBoard,
+            xCells = nextXCells,
+            oCells = nextOCells,
+            emptyCells = nextEmptyCells,
             currentPlayer = nextPlayer,
             state = nextState
         )
@@ -38,26 +44,23 @@ data class GameState(
     }
 
     companion object {
-        private fun calculateGameState(board: List<List<CellValue>>): Result {
-            for (i in board.indices) {
-                // horizontal
-                if (board[i].all { it == board[i][0] && board[i][0] != CellValue.EMPTY }) return cellValueToResult(board[i][0])
+        private val winning_positions = listOf(
+            0b000_000_111,
+            0b000_111_000,
+            0b111_000_000,
+            0b001_001_001,
+            0b010_010_010,
+            0b100_100_100,
+            0b100_010_001,
+            0b001_010_100
+        )
 
-                // vertical
-                if (board.indices.map { board[it][i] }
-                        .all { it == board[0][i] && board[0][i] != CellValue.EMPTY }) return cellValueToResult(board[0][i])
-            }
+        fun calculateGameStateBinary(xCells: Int, oCells: Int, emptyCells: Int): Result {
+            if (winning_positions.any { it and xCells == it }) return Result.X
+            if (winning_positions.any { it and oCells == it }) return Result.O
+            if (emptyCells == 0) return Result.DRAW
 
-            // diagonal
-            if (board.indices.map { board[it][it] }
-                    .all { it == board[0][0] && board[0][0] != CellValue.EMPTY }) return cellValueToResult(board[0][0])
-            if (board.indices.map { board[it][board.size - it - 1] }
-                    .all { it == board[0][board.size - 1] && board[0][board.size - 1] != CellValue.EMPTY })
-                return cellValueToResult(board[0][board.size - 1])
-
-            return if (board.all { row -> row.all { it != CellValue.EMPTY } }) Result.DRAW else Result.OPEN
+            return Result.OPEN
         }
-
-        private fun cellValueToResult(value: CellValue): Result = if (value == CellValue.X) Result.X else Result.O
     }
 }

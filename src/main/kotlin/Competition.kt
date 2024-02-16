@@ -18,7 +18,7 @@ class Competition(private val player1: Player, private val player2: Player, priv
             while (game.state == Result.OPEN) {
                 val player = shuffledPlayers[currentPlayer]
 
-                val move: Pair<Int, Int>
+                val move: Int
                 val thinkingTime = measureTime { move = player.getMove(game) }.inWholeNanoseconds
                 thinkingTimes[player.name] = thinkingTimes.getOrDefault(player.name, 0) + thinkingTime
                 game = game.move(move)
