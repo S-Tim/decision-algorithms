@@ -11,13 +11,13 @@ class AlphaBetaWithMoveSorting(override val name: String = "AlphaBetaWithMoveSor
         // evaluationCounter = 0
 
         val maximizingPlayer = game.currentPlayer == 0
-        val bestMove = minimax(game, Int.MAX_VALUE, Int.MIN_VALUE, Int.MAX_VALUE, maximizingPlayer).second
+        val bestMove = minmax(game, Int.MAX_VALUE, Int.MIN_VALUE, Int.MAX_VALUE, maximizingPlayer).second
 
         // println("$name: $evaluationCounter")
         return bestMove
     }
 
-    private fun minimax(
+    private fun minmax(
         game: GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Boolean
     ): Pair<Int, Int> {
         evaluationCounter += 1
@@ -38,7 +38,7 @@ class AlphaBetaWithMoveSorting(override val name: String = "AlphaBetaWithMoveSor
             var maxEval = alpha
             var bestMove = 0
             for (move in moves) {
-                val (eval, _) = minimax(game.move(move), depth - 1, maxEval, beta, false)
+                val (eval, _) = minmax(game.move(move), depth - 1, maxEval, beta, false)
                 if (eval > maxEval) {
                     maxEval = eval
                     bestMove = move
@@ -50,7 +50,7 @@ class AlphaBetaWithMoveSorting(override val name: String = "AlphaBetaWithMoveSor
             var minEval = beta
             var bestMove = 0
             for (move in moves) {
-                val (eval, _) = minimax(game.move(move), depth - 1, alpha, minEval, true)
+                val (eval, _) = minmax(game.move(move), depth - 1, alpha, minEval, true)
                 if (eval < minEval) {
                     minEval = eval
                     bestMove = move

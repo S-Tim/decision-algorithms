@@ -8,7 +8,7 @@ and performance optimizations and compares them.
 | Name                        | Average thinking time per match | Average visited position per match |
 |-----------------------------|---------------------------------|------------------------------------|
 | Random                      | 0.01ms                          | 0                                  |
-| MiniMax                     | 209.49ms (100%)                 | 300197 (100%)                      |
+| MinMax                      | 209.49ms (100%)                 | 300197 (100%)                      |
 | AlphaBeta                   | 7.667ms (3,66%)                 | 9308 (3,1%)                        |
 | AlphaBeta with move sorting | 4.116ms (1,97%)                 | 4967 (1,66%)                       |
 
@@ -52,6 +52,6 @@ After these optimizations the thinking times for the new thinking times for the 
 | Name                        | Average thinking time per match. Improvement in brackets |
 |-----------------------------|----------------------------------------------------------|
 | Random                      | 0.01ms                                                   |
-| MiniMax                     | TODO                                                     |
+| MinMax                      | TODO                                                     |
 | AlphaBeta                   | TODO                                                     |
 | AlphaBeta with move sorting | TODO                                                     |

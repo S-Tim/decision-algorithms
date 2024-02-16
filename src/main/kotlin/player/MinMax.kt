@@ -5,7 +5,7 @@ import org.example.model.Result
 import kotlin.math.max
 import kotlin.math.min
 
-class MiniMaxPlayer(override val name: String = "MiniMax") : Player {
+class MinMax(override val name: String = "MinMax") : Player {
     var evaluationCounter = 0
 
     override fun getMove(game: GameState): Int {
@@ -13,7 +13,7 @@ class MiniMaxPlayer(override val name: String = "MiniMax") : Player {
 
         val maximizingPlayer = game.currentPlayer == 0
         val moves = game.getMoves()
-        val evaluations = moves.associateWith { move -> minimax(game.move(move), Int.MAX_VALUE, !maximizingPlayer) }
+        val evaluations = moves.associateWith { move -> minmax(game.move(move), Int.MAX_VALUE, !maximizingPlayer) }
 
         //println("$name: $evaluationCounter")
         // Randomly return one of the best moves
@@ -22,7 +22,7 @@ class MiniMaxPlayer(override val name: String = "MiniMax") : Player {
         return evaluations.filter { it.value == bestEval }.keys.random()
     }
 
-    private fun minimax(game: GameState, depth: Int, maximizingPlayer: Boolean): Int {
+    private fun minmax(game: GameState, depth: Int, maximizingPlayer: Boolean): Int {
         evaluationCounter += 1
 
         if (game.state != Result.OPEN || depth == 0) {
@@ -38,14 +38,14 @@ class MiniMaxPlayer(override val name: String = "MiniMax") : Player {
         if (maximizingPlayer) {
             var maxEval = Int.MIN_VALUE
             for (move in moves) {
-                val eval = minimax(game.move(move), depth - 1, false)
+                val eval = minmax(game.move(move), depth - 1, false)
                 maxEval = max(maxEval, eval)
             }
             return maxEval
         } else {
             var minEval = Int.MAX_VALUE
             for (move in moves) {
-                val eval = minimax(game.move(move), depth - 1, true)
+                val eval = minmax(game.move(move), depth - 1, true)
                 minEval = min(minEval, eval)
             }
             return minEval
