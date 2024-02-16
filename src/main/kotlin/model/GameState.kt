@@ -26,7 +26,7 @@ data class GameState(
         val nextXCells = if (currentPlayer == 0) xCells or (1 shl position) else xCells
         val nextOCells = if (currentPlayer == 1) oCells or (1 shl position) else oCells
         val nextEmptyCells = (nextXCells or nextOCells).inv() and 0b111_111_111
-        val nextState = calculateGameStateBinary(nextXCells, nextOCells, nextEmptyCells)
+        val nextState = calculateGameState(nextXCells, nextOCells, nextEmptyCells)
 
         val nextPlayer = if (nextState != Result.OPEN) currentPlayer else (currentPlayer + 1) % 2
         return this.copy(
@@ -63,7 +63,7 @@ data class GameState(
             0b001_010_100
         )
 
-        fun calculateGameStateBinary(xCells: Int, oCells: Int, emptyCells: Int): Result {
+        fun calculateGameState(xCells: Int, oCells: Int, emptyCells: Int): Result {
             if (winning_positions.any { it and xCells == it }) return Result.X
             if (winning_positions.any { it and oCells == it }) return Result.O
             if (emptyCells == 0) return Result.DRAW

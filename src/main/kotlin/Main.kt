@@ -3,7 +3,7 @@ package org.example
 import org.example.player.*
 
 fun main() {
-    val player1 = AlphaBeta()
+    val player1 = AlphaBetaWithMoveSorting()
     val player2 = Negamax()
     val competition = Competition(player1, player2, 1000)
 

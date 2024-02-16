@@ -8,10 +8,7 @@ open class AlphaBeta(override val name: String = "AlphaBeta") : EvaluationPlayer
 
     override fun getMove(game: GameState): Int {
         val maximizingPlayer = game.currentPlayer == 0
-        val bestMove = alphaBeta(game, Int.MAX_VALUE, Int.MIN_VALUE, Int.MAX_VALUE, maximizingPlayer).second
-
-        // println("$name: $evaluationCounter")
-        return bestMove
+        return alphaBeta(game, Int.MAX_VALUE, Int.MIN_VALUE, Int.MAX_VALUE, maximizingPlayer).second
     }
 
     private fun alphaBeta(

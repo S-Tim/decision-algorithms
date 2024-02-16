@@ -51,7 +51,7 @@ After these optimizations the thinking times for the new thinking times for the 
 
 | Name                        | Average thinking time per match. Improvement in brackets |
 |-----------------------------|----------------------------------------------------------|
-| Random                      | 0.01ms                                                   |
-| MinMax                      | TODO                                                     |
-| AlphaBeta                   | TODO                                                     |
-| AlphaBeta with move sorting | TODO                                                     |
+| Random                      | 0.01ms (0.00%)                                           |
+| MinMax                      | 28.96ms (86.18%)                                         |
+| AlphaBeta                   | 1.263ms (83.53%)                                         |
+| AlphaBeta with move sorting | 0.722ms (82.46%)                                         |
