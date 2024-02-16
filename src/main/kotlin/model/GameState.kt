@@ -1,7 +1,6 @@
 package org.example.model
 
 data class GameState(
-    val board: List<List<CellValue>> = (0 until 3).map { (0 until 3).map { CellValue.EMPTY } },
     val xCells: Int = 0,
     val oCells: Int = 0,
     val emptyCells: Int = 511,
@@ -40,7 +39,16 @@ data class GameState(
     }
 
     override fun toString(): String {
-        return board.joinToString("\n") { it.joinToString(" ") }
+        var board = ""
+        for (i in 0 until 3) {
+            for (j in 0 until 3) {
+                val tile = i * 3 + j
+                val binary = 1 shl tile
+                board += if (binary and xCells != 0) "X " else if (binary and oCells != 0) "O " else "- "
+            }
+            board += "\n"
+        }
+        return board
     }
 
     companion object {
