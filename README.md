@@ -1,4 +1,4 @@
-# TicTacToe
+# Decision algorithm comparison for TicTacToe
 
 This is project for better understanding decision algorithms in board games. It illustrates different techniques
 and performance optimizations and compares them.
